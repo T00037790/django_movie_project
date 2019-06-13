@@ -1,0 +1,49 @@
+{% extends 'adminlte/base.html' %}
+{% block content %}
+    <div class="col-md-6">
+        <!-- general form elements -->
+        <div class="box box-primary">
+            <div class="box-header with-border">
+                <h3 class="box-title">Edit Person</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" method="POST">
+                {% csrf_token %}
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="InputName">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ movieperson.name }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="InputAge">Age</label>
+                        <input type="number" class="form-control" id="age" name="age" value="{{ movieperson.age }}"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select class="form-control" id="role" name="role" required>
+                            {% if form %}
+                                {% for x, y in form.fields.role.choices %}
+                                    <option value="{{ x }}"{% if form.fields.role.choices == x %}
+                                            selected{% endif %}>{{ y }}</option>
+                                {% endfor %}
+                            {% else %}
+                                <option>no person registered yet</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+
+                    <div class="box-footer">
+                        <!--<a href="./download_report" class="btn btn-primary" role="button">Generate</a>-->
+                        <button type="submit" class="btn btn-primary" id="save">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}

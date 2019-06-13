@@ -1,0 +1,364 @@
+{% extends 'adminlte/base.html' %}
+{% block stylesheets %}
+    {% include 'adminlte/lib/_styles.html' %}
+    <!-- date_range picker -->
+    <link rel="stylesheet"
+          href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.css">
+    <!-- bootstrap datepicker -->
+    <link rel="stylesheet"
+          href="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-6">
+            <!-- general form elements -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Add Movie</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form role="form" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="InputName">title</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Enter title"
+                                   required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="InputAge">Duration</label>
+                            <input type="number" class="form-control" id="duration" name="duration"
+                                   placeholder="Enter duration in minutes" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="InputAge">Detail</label>
+                            <textarea class="form-control" rows="3" name="detail" id="id_detail"
+                                      placeholder="Enter detail" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            {{ form.poster.errors }}
+                            <label for="{{ form.poster.id_for_label }}" class="required">Poster:</label>
+                            {{ form.poster }}
+                        </div>
+                        <div class="form-group">
+                            <label>Select Actors and Directors</label>
+                            <select multiple="" class="form-control" name="movie_people" id="movie_people">
+                                {% if form %}
+                                    {% for x, y in form.fields.movie_people.choices %}
+                                        <option value="{{ x }}"{% if form.fields.movie_people.choices == x %}
+                                                selected{% endif %}>{{ y }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                    <option>no actor or director registered yet</option>
+                                {% endif %}
+                                <option>option 1</option>
+
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="InputUrl">Trailer URL</label>
+                            <input type="url" class="form-control" id="trailer_url" name="trailer_url"
+                                   placeholder="trailer url" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Genre</label>
+                            <select class="form-control" id="genre" name="genre">
+                                {% if form %}
+                                    {% for x, y in form.fields.genre.choices %}
+                                        <option value="{{ x }}"{% if form.fields.genre.choices == x %}
+                                                selected{% endif %}>{{ y }}</option>
+                                    {% endfor %}
+                                {% else %}
+                                    <option>no genre registered yet</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label for="InputOriginalLanguage">Original Language</label>
+                                <input type="text" class="form-control" id="original_language" name="original_language"
+                                       placeholder="Enter original language" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Release Date:</label>
+
+                                <div class="input-group date">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input type="datetime-local" class="form-control pull-right" id="datepicker"
+                                           name="release_date">
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+
+                            <div class="form-group">
+                                <label for="InputName">Country</label>
+                                <input type="text" class="form-control" id="country" name="country"
+                                       placeholder="Enter country" required>
+                            </div>
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary" id="save">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                {% if form.errors %}
+                    <h5> {{ form.errors }} </h5>
+                {% endif %}
+                <div class="datepicker datepicker-dropdown dropdown-menu datepicker-orient-left datepicker-orient-bottom"
+                     style="top: 1428.55px; left: 293px; z-index: 810; display: block;">
+                    <div class="datepicker-days" style="">
+                        <table class="table-condensed">
+                            <thead>
+                            <tr>
+                                <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                            </tr>
+                            <tr>
+                                <th class="prev">«</th>
+                                <th colspan="5" class="datepicker-switch">August 2018</th>
+                                <th class="next">»</th>
+                            </tr>
+                            <tr>
+                                <th class="dow">Su</th>
+                                <th class="dow">Mo</th>
+                                <th class="dow">Tu</th>
+                                <th class="dow">We</th>
+                                <th class="dow">Th</th>
+                                <th class="dow">Fr</th>
+                                <th class="dow">Sa</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td class="old day" data-date="1532822400000">29</td>
+                                <td class="old day" data-date="1532908800000">30</td>
+                                <td class="old day" data-date="1532995200000">31</td>
+                                <td class="day" data-date="1533081600000">1</td>
+                                <td class="day" data-date="1533168000000">2</td>
+                                <td class="day" data-date="1533254400000">3</td>
+                                <td class="day" data-date="1533340800000">4</td>
+                            </tr>
+                            <tr>
+                                <td class="day" data-date="1533427200000">5</td>
+                                <td class="day" data-date="1533513600000">6</td>
+                                <td class="day" data-date="1533600000000">7</td>
+                                <td class="day" data-date="1533686400000">8</td>
+                                <td class="day" data-date="1533772800000">9</td>
+                                <td class="day" data-date="1533859200000">10</td>
+                                <td class="day" data-date="1533945600000">11</td>
+                            </tr>
+                            <tr>
+                                <td class="day" data-date="1534032000000">12</td>
+                                <td class="day" data-date="1534118400000">13</td>
+                                <td class="day" data-date="1534204800000">14</td>
+                                <td class="day" data-date="1534291200000">15</td>
+                                <td class="day" data-date="1534377600000">16</td>
+                                <td class="day" data-date="1534464000000">17</td>
+                                <td class="day" data-date="1534550400000">18</td>
+                            </tr>
+                            <tr>
+                                <td class="day" data-date="1534636800000">19</td>
+                                <td class="day" data-date="1534723200000">20</td>
+                                <td class="day" data-date="1534809600000">21</td>
+                                <td class="day" data-date="1534896000000">22</td>
+                                <td class="day" data-date="1534982400000">23</td>
+                                <td class="day" data-date="1535068800000">24</td>
+                                <td class="day" data-date="1535155200000">25</td>
+                            </tr>
+                            <tr>
+                                <td class="day" data-date="1535241600000">26</td>
+                                <td class="day" data-date="1535328000000">27</td>
+                                <td class="day" data-date="1535414400000">28</td>
+                                <td class="day" data-date="1535500800000">29</td>
+                                <td class="day" data-date="1535587200000">30</td>
+                                <td class="day" data-date="1535673600000">31</td>
+                                <td class="new day" data-date="1535760000000">1</td>
+                            </tr>
+                            <tr>
+                                <td class="new day" data-date="1535846400000">2</td>
+                                <td class="new day" data-date="1535932800000">3</td>
+                                <td class="new day" data-date="1536019200000">4</td>
+                                <td class="new day" data-date="1536105600000">5</td>
+                                <td class="new day" data-date="1536192000000">6</td>
+                                <td class="new day" data-date="1536278400000">7</td>
+                                <td class="new day" data-date="1536364800000">8</td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="7" class="today" style="display: none;">Today</th>
+                            </tr>
+                            <tr>
+                                <th colspan="7" class="clear" style="display: none;">Clear</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="datepicker-months" style="display: none;">
+                        <table class="table-condensed">
+                            <thead>
+                            <tr>
+                                <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                            </tr>
+                            <tr>
+                                <th class="prev">«</th>
+                                <th colspan="5" class="datepicker-switch">2018</th>
+                                <th class="next">»</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="7"><span class="month">Jan</span><span class="month">Feb</span><span
+                                        class="month">Mar</span><span class="month">Apr</span><span
+                                        class="month">May</span><span class="month">Jun</span><span
+                                        class="month">Jul</span><span class="month focused">Aug</span><span
+                                        class="month">Sep</span><span class="month">Oct</span><span
+                                        class="month">Nov</span><span class="month">Dec</span></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="7" class="today" style="display: none;">Today</th>
+                            </tr>
+                            <tr>
+                                <th colspan="7" class="clear" style="display: none;">Clear</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="datepicker-years" style="display: none;">
+                        <table class="table-condensed">
+                            <thead>
+                            <tr>
+                                <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                            </tr>
+                            <tr>
+                                <th class="prev">«</th>
+                                <th colspan="5" class="datepicker-switch">2010-2019</th>
+                                <th class="next">»</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="7"><span class="year old">2009</span><span class="year">2010</span><span
+                                        class="year">2011</span><span class="year">2012</span><span
+                                        class="year">2013</span><span class="year">2014</span><span
+                                        class="year">2015</span><span class="year">2016</span><span
+                                        class="year">2017</span><span class="year focused">2018</span><span
+                                        class="year">2019</span><span class="year new">2020</span></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="7" class="today" style="display: none;">Today</th>
+                            </tr>
+                            <tr>
+                                <th colspan="7" class="clear" style="display: none;">Clear</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="datepicker-decades" style="display: none;">
+                        <table class="table-condensed">
+                            <thead>
+                            <tr>
+                                <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                            </tr>
+                            <tr>
+                                <th class="prev">«</th>
+                                <th colspan="5" class="datepicker-switch">2000-2090</th>
+                                <th class="next">»</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="7"><span class="decade old">1990</span><span
+                                        class="decade">2000</span><span class="decade focused">2010</span><span
+                                        class="decade">2020</span><span class="decade">2030</span><span class="decade">2040</span><span
+                                        class="decade">2050</span><span class="decade">2060</span><span class="decade">2070</span><span
+                                        class="decade">2080</span><span class="decade">2090</span><span
+                                        class="decade new">2100</span></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="7" class="today" style="display: none;">Today</th>
+                            </tr>
+                            <tr>
+                                <th colspan="7" class="clear" style="display: none;">Clear</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="datepicker-centuries" style="display: none;">
+                        <table class="table-condensed">
+                            <thead>
+                            <tr>
+                                <th colspan="7" class="datepicker-title" style="display: none;"></th>
+                            </tr>
+                            <tr>
+                                <th class="prev">«</th>
+                                <th colspan="5" class="datepicker-switch">2000-2900</th>
+                                <th class="next">»</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td colspan="7"><span class="century old">1900</span><span
+                                        class="century focused">2000</span><span class="century">2100</span><span
+                                        class="century">2200</span><span class="century">2300</span><span
+                                        class="century">2400</span><span class="century">2500</span><span
+                                        class="century">2600</span><span class="century">2700</span><span
+                                        class="century">2800</span><span class="century">2900</span><span
+                                        class="century new">3000</span></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th colspan="7" class="today" style="display: none;">Today</th>
+                            </tr>
+                            <tr>
+                                <th colspan="7" class="clear" style="display: none;">Clear</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {% include 'adminlte/lib/_scripts.html' %}
+    <!-- jQuery 3 -->
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/jquery/dist/jquery.min.js"></script>
+    <!-- bootstrap datepicker -->
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/moment/min/moment.min.js"></script>
+    <script src="https://adminlte.io/themes/AdminLTE/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script>
+        //Date picker
+        $('#datepicker').datepicker({
+            autoclose: true
+        })
+    </script>
+{% endblock %}
+
+
+
+
+
+

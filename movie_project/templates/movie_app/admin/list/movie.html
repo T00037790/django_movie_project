@@ -1,0 +1,83 @@
+{% extends 'adminlte/base.html' %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">Movie List</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <th style="width: 10px">ID</th>
+                        <th>Title</th>
+                        <th>Duration</th>
+                        <th>Detail</th>
+                        <th>Poster</th>
+                        <th>Characters</th>
+                        <th>Trailer</th>
+                        <th>Genre</th>
+                        <th>Language</th>
+                        <th>Release Date</th>
+                        <th>Country</th>
+                    </tr>
+                    <tr>
+                        {% if movie_list %}
+                            {% for movie in movie_list %}
+                                <tr>
+                                    <td>{{ movie.id }}</td>
+                                    <th class="field-__str__">
+                                        <a href="{% url 'movie_app:edit_movie' movie.id %}" class="text">
+                                            <div class="text"><span>{{ movie.title }}</span></div>
+                                        </a>
+                                    </th>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ movie.duration }}</span></div>
+                                    </td>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ movie.detail }}</span></div>
+                                    </td>
+                                    {% if movie.poster  %}
+                                    <td class="field-__str__">
+                                        <img src="{{ movie.poster.url|default_if_none:'#' }}" alt="poster" height="50%"
+                                             width="50%">
+                                    </td>
+                                    {% endif %}
+                                    <td class="field-__str__">
+                                        {% for actor in movie.movie_people.all %}
+                                            <div class="text"><span>{{ actor.name }}</span></div>
+                                        {% endfor %}
+                                    </td>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ movie.trailer_url }}</span></div>
+                                    </td>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ movie.genre }}</span></div>
+                                    </td>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ movie.original_language }}</span></div>
+                                    </td>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ movie.release_date }}</span></div>
+                                    </td>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ movie.country }}</span></div>
+                                    </td>
+                                </tr>
+
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td><p>Any person have been registered yet</p></td>
+                            </tr>
+                        {% endif %}
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+{% endblock %}

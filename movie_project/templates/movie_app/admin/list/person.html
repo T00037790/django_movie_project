@@ -1,0 +1,56 @@
+{% extends 'adminlte/base.html' %}
+
+{% block content %}
+    <div class="col-md-5">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">People List</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body no-padding">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <th></th>
+                        <th style="width: 10px">ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Role</th>
+                    </tr>
+                    <tr>
+                        {% if movieperson_list %}
+                            {% for person in movieperson_list %}
+                                <tr>
+                                    <th scope="col" class="action-checkbox-column">
+                                        <div class="text"><span><input type="checkbox" id="action-toggle"></span></div>
+                                        <div class="clear"></div>
+                                    </th>
+                                    <td>{{ person.id }}</td>
+                                    <th class="field-__str__">
+                                        <a href="{% url 'movie_app:edit_person' person.id %}" class="text">
+                                            <div class="text"><span>{{ person.name }}</span></div>
+                                        </a>
+                                    </th>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ person.age }}</span></div>
+                                    </td>
+                                    <td class="field-__str__">
+                                        <div class="text"><span>{{ person.role }}</span></div>
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td><p>Any person have been registered yet</p></td>
+                            </tr>
+                        {% endif %}
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    </div>
+{% endblock %}
