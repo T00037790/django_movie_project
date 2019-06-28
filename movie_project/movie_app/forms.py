@@ -1,6 +1,8 @@
 from django import forms
-from .models import Movie, MoviePerson, MovieRate
-from .choices import ROLES
+from django.contrib.auth.hashers import check_password
+
+from .models import Movie, MoviePerson, MovieRate, User, Suggest
+from django.core.exceptions import ValidationError
 
 
 class MoviePersonForm(forms.ModelForm):
@@ -54,19 +56,6 @@ class MovieForm(forms.ModelForm):
              'release_date': 'Release Date',
              # 'country': 'Country',
         }
-        widgets = {
-            #  'title': forms.TextInput(),
-            #  'duration': forms.NumberInput(),
-            #  'detail': forms.TextInput(),
-            #  'movie_people': forms.SelectMultiple(),
-            # 'poster': forms.ImageField(),
-            #  'trailer_url': forms.URLInput(),
-            #  'genre': forms.SelectMultiple(),
-            #  'original_language': forms.TextInput(),
-            #  'release_date': forms.DateField(),
-            # 'country': forms.TextInput(),
-
-        }
 
 
 class MovieRateForm(forms.ModelForm):
@@ -92,3 +81,37 @@ class MovieRateForm(forms.ModelForm):
 
         }
 
+
+class AuthenticationForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(
+        label="Password",
+        strip=False,
+        widget=forms.PasswordInput,
+    )
+
+    def clean(self):
+        data = super(AuthenticationForm, self).clean()
+        if not self.errors:
+            username = data['username']
+            try:
+                query_user = User.objects.get(username=username)
+            except Exception:
+                raise ValidationError('Username does not exist!')
+            query_user = User.objects.get(username=username)
+            match_check = check_password(data['password'], query_user.password)
+            if not match_check:
+                raise ValidationError('incorrect password')
+        return data
+
+
+class MovieDownloader(forms.Form):
+    movie_name = forms.CharField()
+
+
+class SuggestForm(forms.ModelForm):
+    class Meta:
+        model = Suggest
+        fields = ['movie_title']
+        labels = {'movie_title': 'Suggested Movies'}
+        widgets = {'movie': forms.TextInput()}

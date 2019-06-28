@@ -43,6 +43,9 @@ INSTALLED_APPS = [
     'debug_toolbar',
 
     'movie_app',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'movie_app.api',
 
 ]
 
@@ -55,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'movie_app.middleware.LoginMiddleware',
 ]
 
 ROOT_URLCONF = 'movie_project.urls'
@@ -88,6 +92,8 @@ DATABASES = {
     }
 }
 
+# CELERY_TASK_ALWAYS_EAGER = True  # should be placed settings local
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -119,9 +125,21 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
+
+
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+#TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 
 USE_I18N = True
 
@@ -131,7 +149,15 @@ USE_TZ = True
 
 INTERNAL_IPS = ['127.0.0.1', 'localhost']  # va en el local_settings.py
 
+API_VERSION = 'v1'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+
+
+try:
+    exec(open(os.path.join(BASE_DIR, 'movie_project', 'settings_local.py')).read())
+except IOError:
+    raise Exception('error reading local settings')
 

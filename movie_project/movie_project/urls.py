@@ -26,5 +26,6 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
         path('__debug__/', include(debug_toolbar.urls)),
+        path(f'api/{settings.API_VERSION}/', include(('movie_app.api.urls', 'movie_app.api'), namespace='api-movie_app')),
 
     ] + urlpatterns
